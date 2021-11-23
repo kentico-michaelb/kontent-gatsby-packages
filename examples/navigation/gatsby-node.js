@@ -60,6 +60,10 @@ exports.createPages = async ({ graphql, actions }) => {
       allKontentItemNavigationItem {
         nodes {
           url
+          preferred_language
+          system {
+            codename
+          }
           elements {
             content_page {
               value {
@@ -76,6 +80,7 @@ exports.createPages = async ({ graphql, actions }) => {
       }
     }
   `)
+  
 
   data.allKontentItemNavigationItem.nodes.forEach(page => {
     const contentPage = page.elements.content_page.value[0]
@@ -87,5 +92,26 @@ exports.createPages = async ({ graphql, actions }) => {
         codename: contentPage.system.codename,
       },
     })
+
+    // createPage could be createRedirect instead -- reference the README for the repo
+    if(process.env.NODE_ENV === 'development') {
+      createPage({
+        path: `/preview/page/${contentPage.preferred_language}/${contentPage.system.codename}`,// preview URL https://<domain>/preview/page/{Lang}/{Codename}
+        component: require.resolve(`./src/templates/content-page.js`),
+        context: {
+          language: contentPage.preferred_language,
+          codename: contentPage.system.codename,
+        },
+      })
+
+      createPage({
+        path: `/preview/navigation/${page.preferred_language}/${page.system.codename}`,// preview URL https://<domain>/preview/navigation/{Lang}/{Codename}
+        component: require.resolve(`./src/templates/content-page.js`),
+        context: {
+          language: contentPage.preferred_language,
+          codename: contentPage.system.codename,
+        },
+      })
+    }
   })
 }

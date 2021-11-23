@@ -14,6 +14,7 @@ const ComponentName = ({ data }) => {
   )
 }
 
+//alter system.codename filter if urlSlug is preferred
 export const query = graphql`
   query ContentPageQuery($language: String!, $codename: String!) {
     kontentItemContentPage(

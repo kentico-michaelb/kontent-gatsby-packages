@@ -4,16 +4,16 @@ import { useStaticQuery, graphql, Link } from "gatsby"
 const ComplexMenu = () => {
   const data = useStaticQuery(graphql`
     {
-      kontentItemNavigationItem(
-        system: { codename: { eq: "website_root_navigation" } }
+      kontentItemHomepage(
+        system: { codename: { eq: "homepage" } }
       ) {
-        url
         elements {
           title {
             value
           }
           subitems {
             value {
+              id
               ... on kontent_item_navigation_item {
                 url
                 elements {
@@ -53,10 +53,10 @@ const ComplexMenu = () => {
     }
   `)
 
-  const rootMenu = data.kontentItemNavigationItem
+  const rootMenu = data.kontentItemHomepage
 
   const constructMenu = menuItem => {
-    const url = menuItem.url
+    const url = menuItem.url || '/'
     const title = menuItem.elements.title.value
     const itemHtml = (
       <li key={url}>
