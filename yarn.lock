@@ -1582,6 +1582,11 @@
     parse5 "6.0.1"
     reflect-metadata "0.1.13"
 
+"@kentico/kontent-smart-link@^2.2.1":
+  version "2.2.1"
+  resolved "https://registry.yarnpkg.com/@kentico/kontent-smart-link/-/kontent-smart-link-2.2.1.tgz#1623ee579cc6270b08dc8480cc1a24b6aba77cd9"
+  integrity sha512-GUG7vsZ7ABNFkWraZE97P10MWAhfGwBSW0NuFMm4Ehv+x0APd2r49raOVfxFJMcOgSmGFCXPhemUEbpyVsgoKA==
+
 "@kentico/kontent-webhook-helper@^1.1.0":
   version "1.2.0"
   resolved "https://registry.yarnpkg.com/@kentico/kontent-webhook-helper/-/kontent-webhook-helper-1.2.0.tgz#e90eb4a9042997d6eb6e121142dbcd18f5d305cf"

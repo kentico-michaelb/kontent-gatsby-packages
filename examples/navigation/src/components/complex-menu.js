@@ -54,7 +54,6 @@ const ComplexMenu = () => {
   `)
 
   const rootMenu = data.kontentItemHomepage
-
   const constructMenu = menuItem => {
     const url = menuItem.url || '/'
     const title = menuItem.elements.title.value
