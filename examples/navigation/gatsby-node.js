@@ -43,7 +43,7 @@ exports.createSchemaCustomization = async api => {
           } while (parent)
 
           urlFragments.reverse()
-          return urlFragments[0] + urlFragments.slice(1).join("/")
+          return "/" + urlFragments.join("/");
         },
       },
     },
@@ -57,6 +57,24 @@ exports.createPages = async ({ graphql, actions }) => {
 
   const { data } = await graphql(`
     query TopLevelPages {
+      kontentItemHomepage {
+        system {
+          codename
+        }
+        preferred_language
+        elements {
+          content {
+            value {
+              ... on kontent_item_content_page {
+                preferred_language
+                system {
+                  codename
+                }
+              }
+            }
+          }
+        }
+      }
       allKontentItemNavigationItem {
         nodes {
           url
@@ -80,7 +98,32 @@ exports.createPages = async ({ graphql, actions }) => {
       }
     }
   `)
-  
+
+  const homepageContent = data.kontentItemHomepage.elements.content.value[0];
+  const homepageNav = data.kontentItemHomepage;
+
+  createPage({
+    path: "/",
+    component: require.resolve(`./src/templates/content-page.js`),
+    context: {
+      language: homepageContent.preferred_language,
+      codename: homepageContent.system.codename,
+    },
+  });
+
+  if (process.env.NODE_ENV === 'development') {
+    createPage({
+      path: `/preview/navigation/${homepageNav.preferred_language}/${homepageNav.system.codename}`,// preview URL https://<domain>/preview/page/{Lang}/{Codename}
+      component: require.resolve(`./src/templates/content-page.js`),
+      context: {
+        language: homepageContent.preferred_language,
+        codename: homepageContent.system.codename,
+      },
+    })
+  }
+
+
+
 
   data.allKontentItemNavigationItem.nodes.forEach(page => {
     const contentPage = page.elements.content_page.value[0]
@@ -94,7 +137,7 @@ exports.createPages = async ({ graphql, actions }) => {
     })
 
     // createPage could be createRedirect instead -- reference the README for the repo
-    if(process.env.NODE_ENV === 'development') {
+    if (process.env.NODE_ENV === 'development') {
       createPage({
         path: `/preview/page/${contentPage.preferred_language}/${contentPage.system.codename}`,// preview URL https://<domain>/preview/page/{Lang}/{Codename}
         component: require.resolve(`./src/templates/content-page.js`),
