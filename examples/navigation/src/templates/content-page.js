@@ -6,6 +6,8 @@ const ComponentName = ({ data }) => {
   return (
     <Layout title={data.kontentItemContentPage.elements.title.value}>
       <div
+        data-kontent-item-id={data.kontentItemContentPage.system.id}
+        data-kontent-element-codename="content"
         dangerouslySetInnerHTML={{
           __html: data.kontentItemContentPage.elements.content.value,
         }}
@@ -21,6 +23,9 @@ export const query = graphql`
       preferred_language: { eq: $language }
       system: { codename: { eq: $codename } }
     ) {
+      system {
+        id
+      }
       elements {
         title {
           value
